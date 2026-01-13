@@ -13,6 +13,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-add_holohub_application(gst_video_recorder DEPENDS OPERATORS gstreamer)
-add_holohub_application(holo_to_gst DEPENDS OPERATORS gstreamer)
+project(holo_to_gst CXX)
+
+find_package(holoscan REQUIRED CONFIG
+             PATHS "/opt/nvidia/holoscan" "/workspace/holoscan-sdk/install")
+
+add_executable(holo-to-gst
+  ../common/pattern_generator.cpp
+  holo_to_gst.cpp
+)
+
+target_include_directories(holo-to-gst
+  PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/../common
+)
+
+target_link_libraries(holo-to-gst
+  PRIVATE
+  holoscan::core
+  holoscan::ops::gstreamer_bridge
+  holoscan::ops::v4l2
+  holoscan::ops::format_converter
+)
+
+# Install target
+install(TARGETS holo-to-gst DESTINATION bin/holo_to_gst)
 

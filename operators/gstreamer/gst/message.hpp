@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+ * SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
  * SPDX-License-Identifier: Apache-2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,6 +41,15 @@ class Message : public MiniObjectBase<Message, ::GstMessage> {
    * @param message GstMessage pointer to wrap (nullptr is allowed)
    */
   explicit Message(::GstMessage* message = nullptr) : MiniObjectBase(message) {}
+
+  /**
+   * @brief Get the type of this message
+   * @return The GstMessageType (e.g., GST_MESSAGE_ERROR, GST_MESSAGE_EOS)
+   * @note Returns GST_MESSAGE_UNKNOWN if the message is null
+   */
+  GstMessageType get_type() const {
+    return this->get() ? GST_MESSAGE_TYPE(this->get()) : GST_MESSAGE_UNKNOWN;
+  }
 
   /**
    * @brief Parse error message and extract error information.
